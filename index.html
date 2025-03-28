@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Crop</title>
+</head>
+<body>
+    <div style="max-height:unset;">
+        <img id="croppedImage" style="object-fit: none;" />
+    </div>
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                imageUrl: params.get('image'),
+                x: parseInt(params.get('x'), 10),
+                y: parseInt(params.get('y'), 10),
+                w: parseInt(params.get('w'), 10),
+                h: parseInt(params.get('h'), 10)
+            };
+        }
+
+        function cropImage() {
+            const { imageUrl, x, y, w, h } = getQueryParams();
+
+            if (imageUrl) {
+                const croppedImage = document.getElementById('croppedImage');
+                croppedImage.src = imageUrl;
+                croppedImage.style.width = `${w}px`;
+                croppedImage.style.height = `${h}px`;
+                croppedImage.style.objectPosition = `-${x}px -${y}px`;
+            } else {
+                console.error('Image URL not provided');
+            }
+        }
+
+        cropImage();
+    </script>
+</body>
+</html>
