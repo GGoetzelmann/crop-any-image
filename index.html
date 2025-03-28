@@ -9,19 +9,15 @@
         <img id="croppedImage" style="object-fit: none;" />
     </div>
     <script>
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                imageUrl: params.get('image'),
-                x: parseInt(params.get('x'), 10),
-                y: parseInt(params.get('y'), 10),
-                w: parseInt(params.get('w'), 10),
-                h: parseInt(params.get('h'), 10)
-            };
+        function getFragmentParams() {
+            const url = new URL(window.location.href);
+            const fragment = url.hash.substring(1); // Remove the '#' character
+            const [x, y, w, h] = fragment.replace('xywh=', '').split(',').map(Number);
+            return { x, y, w, h };
         }
 
-        function cropImage() {
-            const { imageUrl, x, y, w, h } = getQueryParams();
+        function cropImage(imageUrl) {
+            const { x, y, w, h } = getFragmentParams();
 
             if (imageUrl) {
                 const croppedImage = document.getElementById('croppedImage');
@@ -34,7 +30,9 @@
             }
         }
 
-        cropImage();
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('image');
+        cropImage(imageUrl);
     </script>
 </body>
 </html>
